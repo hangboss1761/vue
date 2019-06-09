@@ -24,7 +24,7 @@ export function createCompileToFunctionFn (compile: Function): Function {
   return function compileToFunctions (
     template: string,
     options?: CompilerOptions,
-    vm?: Component
+    vm?: Component // vm实例
   ): CompiledFunctionResult {
     options = extend({}, options)
     const warn = options.warn || baseWarn
@@ -32,6 +32,9 @@ export function createCompileToFunctionFn (compile: Function): Function {
 
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production') {
+      // 因为vue的render方法使用eval函数
+      // eval函数是不安全的函数
+      // 所以这里会尝试使用创建一个新的函数，判断浏览器中是否可以使用eval
       // detect possible CSP restriction
       try {
         new Function('return 1')
@@ -49,6 +52,8 @@ export function createCompileToFunctionFn (compile: Function): Function {
     }
 
     // check cache
+    // delimiters分隔符
+    // https://cn.vuejs.org/v2/api/#delimiters
     const key = options.delimiters
       ? String(options.delimiters) + template
       : template

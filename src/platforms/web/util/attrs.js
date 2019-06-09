@@ -4,11 +4,19 @@ import { makeMap } from 'shared/util'
 
 // these are reserved for web because they are directly compiled away
 // during template compilation
+// 是否为保留标签属性（只保留了style和class）
 export const isReservedAttr = makeMap('style,class')
 
 // attributes that should be using props for binding
+// 允许绑定value的标签
 const acceptValue = makeMap('input,textarea,option,select,progress')
+// 必须要使用prop的标签
 export const mustUseProp = (tag: string, type: ?string, attr: string): boolean => {
+  // 返回为真的情况
+  // 1、属性为value，且标签为允许绑定value的标签，type不为button
+  // 2、属性为selected，且标签为option
+  // 3、属性为checked，且标签为input
+  // 4、属性为muted，且标签为video https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/video
   return (
     (attr === 'value' && acceptValue(tag)) && type !== 'button' ||
     (attr === 'selected' && tag === 'option') ||

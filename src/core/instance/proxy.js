@@ -6,6 +6,7 @@ import { warn, makeMap, isNative } from '../util/index'
 let initProxy
 
 if (process.env.NODE_ENV !== 'production') {
+  // 创建合法的全局方法Map
   const allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -34,17 +35,26 @@ if (process.env.NODE_ENV !== 'production') {
     )
   }
 
+  // 判断是否支持Proxy方法
+  // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
   const hasProxy =
     typeof Proxy !== 'undefined' && isNative(Proxy)
 
+  // 支持proxy方法
   if (hasProxy) {
+    // 创建事件map
     const isBuiltInModifier = makeMap('stop,prevent,self,ctrl,shift,alt,meta,exact')
+    // 对config.keyCodes代理
+    // 设置键位code值
     config.keyCodes = new Proxy(config.keyCodes, {
       set (target, key, value) {
+        // 重置set方法
         if (isBuiltInModifier(key)) {
+          // 如果set的key为vue事件的保留关键词则返回false
           warn(`Avoid overwriting built-in modifier in config.keyCodes: .${key}`)
           return false
         } else {
+          // 非保留关键词则设置value
           target[key] = value
           return true
         }

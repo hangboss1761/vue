@@ -33,14 +33,15 @@ export function genComponentModel (
 /**
  * Cross-platform codegen helper for generating v-model value assignment code.
  */
+// 用于生成v-model赋值代码
 export function genAssignmentCode (
   value: string,
   assignment: string
 ): string {
-  const res = parseModel(value)
-  if (res.key === null) {
+  const res = parseModel(value) // 解析value
+  if (res.key === null) { // value的表达式只是一个变量
     return `${value}=${assignment}`
-  } else {
+  } else { // value为一个表达式
     return `$set(${res.exp}, ${res.key}, ${assignment})`
   }
 }
@@ -70,17 +71,19 @@ type ModelParseResult = {
 export function parseModel (val: string): ModelParseResult {
   // Fix https://github.com/vuejs/vue/pull/7730
   // allow v-model="obj.val " (trailing whitespace)
-  val = val.trim()
-  len = val.length
+  val = val.trim() // 去掉两边空白
+  len = val.length // value字符串长度
 
   if (val.indexOf('[') < 0 || val.lastIndexOf(']') < len - 1) {
-    index = val.lastIndexOf('.')
+    // 不以 [ 开头 & 不以 ] 结尾
+    index = val.lastIndexOf('.') //最后一个.位置
     if (index > -1) {
       return {
-        exp: val.slice(0, index),
-        key: '"' + val.slice(index + 1) + '"'
+        exp: val.slice(0, index), // 取值路径，例：a.b.c =》 a.b
+        key: '"' + val.slice(index + 1) + '"' // 最终获取的key
       }
     } else {
+      // 没有 . 则认为只是一个变量
       return {
         exp: val,
         key: null

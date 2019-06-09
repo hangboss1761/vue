@@ -4,6 +4,8 @@ import { ASSET_TYPES } from 'shared/constants'
 import { defineComputed, proxy } from '../instance/state'
 import { extend, mergeOptions, validateComponentName } from '../util/index'
 
+
+// 初始化Vue的全局API Vue.extend方法
 export function initExtend (Vue: GlobalAPI) {
   /**
    * Each instance constructor, including Vue, has a unique
@@ -16,10 +18,12 @@ export function initExtend (Vue: GlobalAPI) {
   /**
    * Class inheritance
    */
+  // 全局API - extend声明
   Vue.extend = function (extendOptions: Object): Function {
     extendOptions = extendOptions || {}
     const Super = this
     const SuperId = Super.cid
+    // _Ctor为一个缓存字段
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if (cachedCtors[SuperId]) {
       return cachedCtors[SuperId]
@@ -27,9 +31,11 @@ export function initExtend (Vue: GlobalAPI) {
 
     const name = extendOptions.name || Super.options.name
     if (process.env.NODE_ENV !== 'production' && name) {
+      // 非生产环境 & 已定义name会校验name是否有效
       validateComponentName(name)
     }
 
+    // 创建子类原型
     const Sub = function VueComponent (options) {
       this._init(options)
     }
@@ -75,21 +81,27 @@ export function initExtend (Vue: GlobalAPI) {
     Sub.sealedOptions = extend({}, Sub.options)
 
     // cache constructor
-    cachedCtors[SuperId] = Sub
+    cachedCtors[SuperId] = Sub // 新增缓存
     return Sub
   }
 }
 
+// 初始化props
 function initProps (Comp) {
   const props = Comp.options.props
+  // 对props遍历
   for (const key in props) {
+    // 将props中的每一个字段都赋值到Comp.prototype._props上
     proxy(Comp.prototype, `_props`, key)
   }
 }
 
+// 初始化computed
 function initComputed (Comp) {
   const computed = Comp.options.computed
+  // 对computed遍历
   for (const key in computed) {
+    // 对每一个computed的字段进行初始化定义计算属性
     defineComputed(Comp.prototype, key, computed[key])
   }
 }

@@ -81,6 +81,8 @@ function flushSchedulerQueue () {
   //    user watchers are created before the render watcher)
   // 3. If a component is destroyed during a parent component's watcher run,
   //    its watchers can be skipped.
+  // 这里将watcher进行升序排序
+  // id小的肯定是父级的watcher
   queue.sort((a, b) => a.id - b.id)
 
   // do not cache length because more watchers might be pushed
@@ -166,10 +168,12 @@ export function queueWatcher (watcher: Watcher) {
   if (has[id] == null) {
     has[id] = true
     if (!flushing) {
+      // flushing没更新时，直接push
       queue.push(watcher)
     } else {
       // if already flushing, splice the watcher based on its id
       // if already past its id, it will be run next immediately.
+      // flushing更新时，将watcher插入到队列中，并根据watcher的id排序（升序）
       let i = queue.length - 1
       while (i > index && queue[i].id > watcher.id) {
         i--

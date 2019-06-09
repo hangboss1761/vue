@@ -83,7 +83,13 @@ export function createPatchFunction (backend) {
   }
 
   function emptyNodeAt (elm) {
-    return new VNode(nodeOps.tagName(elm).toLowerCase(), {}, [], undefined, elm)
+    return new VNode(
+      nodeOps.tagName(elm).toLowerCase(), // tag
+      {}, // data
+      [], // children
+      undefined,  // text
+      elm // elm
+    )
   }
 
   function createRmCb (childElm, listeners) {
@@ -344,6 +350,7 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // 触发Destroy
   function invokeDestroyHook (vnode) {
     let i, j
     const data = vnode.data
@@ -698,6 +705,7 @@ export function createPatchFunction (backend) {
   }
 
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
+    // 新的vnode未定义，oldVnode已定义，则触发destroy方法
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
       return
@@ -711,7 +719,7 @@ export function createPatchFunction (backend) {
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue)
     } else {
-      const isRealElement = isDef(oldVnode.nodeType)
+      const isRealElement = isDef(oldVnode.nodeType) // 判断是否为DOM
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         // patch existing root node
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly)
@@ -740,9 +748,10 @@ export function createPatchFunction (backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          // 如果oldVnode是一个DOM元素，则将其转成VNode
+          // 此时oldVnode的elm为其DOM元素
           oldVnode = emptyNodeAt(oldVnode)
         }
-
         // replacing existing element
         const oldElm = oldVnode.elm
         const parentElm = nodeOps.parentNode(oldElm)

@@ -276,13 +276,17 @@ function checkComponents (options: Object) {
   }
 }
 
+// 校验组件名是否有效
 export function validateComponentName (name: string) {
+  // 这个正则匹配规则为：必须a-zA-Z开头，后面的文本只能为a-zA-Z0-9.-_和unicode字符
   if (!new RegExp(`^[a-zA-Z][\\-\\.0-9_${unicodeRegExp.source}]*$`).test(name)) {
     warn(
       'Invalid component name: "' + name + '". Component names ' +
       'should conform to valid custom element name in html5 specification.'
     )
   }
+  // isBuiltInTag用来判断name是否为vue内置的tag（slot, component）
+  // config.isReservedTag用来判断name是否为保留tag标签
   if (isBuiltInTag(name) || config.isReservedTag(name)) {
     warn(
       'Do not use built-in or reserved HTML elements as component ' +
@@ -295,23 +299,24 @@ export function validateComponentName (name: string) {
  * Ensure all props option syntax are normalized into the
  * Object-based format.
  */
+// 初始化props
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
   if (!props) return
   const res = {}
   let i, val, name
-  if (Array.isArray(props)) {
+  if (Array.isArray(props)) { // props为数组
     i = props.length
     while (i--) {
       val = props[i]
       if (typeof val === 'string') {
-        name = camelize(val)
+        name = camelize(val) // 将连词符转成驼峰
         res[name] = { type: null }
       } else if (process.env.NODE_ENV !== 'production') {
         warn('props must be strings when using array syntax.')
       }
     }
-  } else if (isPlainObject(props)) {
+  } else if (isPlainObject(props)) { // props为对象
     for (const key in props) {
       val = props[key]
       name = camelize(key)

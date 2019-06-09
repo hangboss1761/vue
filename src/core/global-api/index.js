@@ -18,8 +18,10 @@ import {
   defineReactive
 } from '../util/index'
 
+// 初始化Vue的全局方法
 export function initGlobalAPI (Vue: GlobalAPI) {
   // config
+  // 这里设置了Vue.config并定义了config字段只读不可写（设置get/set方法）
   const configDef = {}
   configDef.get = () => config
   if (process.env.NODE_ENV !== 'production') {
@@ -35,15 +37,15 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // NOTE: these are not considered part of the public API - avoid relying on
   // them unless you are aware of the risk.
   Vue.util = {
-    warn,
-    extend,
+    warn, // 全局报错函数
+    extend, // 继承函数（浅拷贝）
     mergeOptions,
     defineReactive
   }
 
-  Vue.set = set
-  Vue.delete = del
-  Vue.nextTick = nextTick
+  Vue.set = set // 等同于$set
+  Vue.delete = del // 删除对象字段
+  Vue.nextTick = nextTick // 等同于$nextTick
 
   // 2.6 explicit observable API
   Vue.observable = <T>(obj: T): T => {

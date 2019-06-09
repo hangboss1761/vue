@@ -14,6 +14,7 @@ export function createCompilerCreator (baseCompile: Function): Function {
       const errors = []
       const tips = []
 
+      // 报错函数
       let warn = (msg, range, tip) => {
         (tip ? tips : errors).push(msg)
       }
@@ -62,6 +63,7 @@ export function createCompilerCreator (baseCompile: Function): Function {
       if (process.env.NODE_ENV !== 'production') {
         detectErrors(compiled.ast, warn)
       }
+
       compiled.errors = errors
       compiled.tips = tips
       return compiled

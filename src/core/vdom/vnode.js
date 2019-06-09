@@ -1,11 +1,12 @@
 /* @flow */
 
+// 虚拟DOM原型
 export default class VNode {
-  tag: string | void;
+  tag: string | void; // 标签
   data: VNodeData | void;
-  children: ?Array<VNode>;
-  text: string | void;
-  elm: Node | void;
+  children: ?Array<VNode>; // 子元素
+  text: string | void; // 文本内容
+  elm: Node | void; // 对应的dom
   ns: string | void;
   context: Component | void; // rendered in this component's scope
   key: string | number | void;
@@ -17,7 +18,7 @@ export default class VNode {
   raw: boolean; // contains raw HTML? (server only)
   isStatic: boolean; // hoisted static node
   isRootInsert: boolean; // necessary for enter transition check
-  isComment: boolean; // empty comment placeholder?
+  isComment: boolean; // 是否为注释 // empty comment placeholder?
   isCloned: boolean; // is a cloned node?
   isOnce: boolean; // is a v-once node?
   asyncFactory: Function | void; // async component factory function
@@ -30,12 +31,12 @@ export default class VNode {
   fnScopeId: ?string; // functional scope id support
 
   constructor (
-    tag?: string,
-    data?: VNodeData,
-    children?: ?Array<VNode>,
-    text?: string,
+    tag?: string, // 标签
+    data?: VNodeData, // 全部属性对象
+    children?: ?Array<VNode>, // 子元素
+    text?: string, // 文本
     elm?: Node,
-    context?: Component,
+    context?: Component, // vue实例
     componentOptions?: VNodeComponentOptions,
     asyncFactory?: Function
   ) {
@@ -71,10 +72,11 @@ export default class VNode {
   }
 }
 
+// 创建一个空虚拟node
 export const createEmptyVNode = (text: string = '') => {
   const node = new VNode()
-  node.text = text
-  node.isComment = true
+  node.text = text // 设置文本
+  node.isComment = true // 空的node默认认为是一段注释
   return node
 }
 

@@ -10,25 +10,29 @@ import { initLifecycle, callHook } from './lifecycle'
 import { initProvide, initInjections } from './inject'
 import { extend, mergeOptions, formatComponentName } from '../util/index'
 
-let uid = 0
+let uid = 0 // 每一实例会有一个专属的uid
 
 export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
-    vm._uid = uid++
+    vm._uid = uid++ // 设置uid，uid + 1
 
     let startTag, endTag
     /* istanbul ignore if */
+    // 非生产环境 & 设置performance && mark方法存在（
+    // mark方法在src/core/util/perf中实现）
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       startTag = `vue-perf-start:${vm._uid}`
       endTag = `vue-perf-end:${vm._uid}`
+      // 开启一个性能分析开始标记
       mark(startTag)
     }
 
     // a flag to avoid this being observed
-    vm._isVue = true
+    vm._isVue = true // 添加vue标记
     // merge options
+    // options存在且_isComponent为true（子组件）
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
@@ -45,10 +49,11 @@ export function initMixin (Vue: Class<Component>) {
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
     } else {
+      // _renderProxy就是自身
       vm._renderProxy = vm
     }
     // expose real self
-    vm._self = vm
+    vm._self = vm // 设置_self指向自身
     initLifecycle(vm)
     initEvents(vm)
     initRender(vm)

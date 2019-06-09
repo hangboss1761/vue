@@ -20,6 +20,7 @@ export function initAssetRegisters (Vue: GlobalAPI) {
           validateComponentName(id)
         }
         if (type === 'component' && isPlainObject(definition)) {
+          // Vue.component定义
           definition.name = definition.name || id
           definition = this.options._base.extend(definition)
         }

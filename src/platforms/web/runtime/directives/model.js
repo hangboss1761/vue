@@ -10,6 +10,7 @@ import { warn, isIE9, isIE, isEdge } from 'core/util/index'
 
 /* istanbul ignore if */
 if (isIE9) {
+  // IE9下主动触发input事件
   // http://www.matts411.com/post/internet-explorer-9-oninput/
   document.addEventListener('selectionchange', () => {
     const el = document.activeElement
@@ -20,6 +21,7 @@ if (isIE9) {
 }
 
 const directive = {
+  // 插入方法
   inserted (el, binding, vnode, oldVnode) {
     if (vnode.tag === 'select') {
       // #6903
@@ -121,12 +123,14 @@ function hasNoMatchingOption (value, options) {
   return options.every(o => !looseEqual(o, value))
 }
 
+// 返回_value或value字段
 function getValue (option) {
   return '_value' in option
     ? option._value
     : option.value
 }
 
+// 设置composing为true
 function onCompositionStart (e) {
   e.target.composing = true
 }
@@ -138,7 +142,9 @@ function onCompositionEnd (e) {
   trigger(e.target, 'input')
 }
 
+// 主动触发事件
 function trigger (el, type) {
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createEvent
   const e = document.createEvent('HTMLEvents')
   e.initEvent(type, true, true)
   el.dispatchEvent(e)

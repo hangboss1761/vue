@@ -4,7 +4,9 @@ export let mark
 export let measure
 
 if (process.env.NODE_ENV !== 'production') {
-  const perf = inBrowser && window.performance
+  // window.performance
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/Performance
+  const perf = inBrowser && window.performance // 浏览器环境下返回window.performance
   /* istanbul ignore if */
   if (
     perf &&
@@ -13,7 +15,11 @@ if (process.env.NODE_ENV !== 'production') {
     perf.clearMarks &&
     perf.clearMeasures
   ) {
+    // 创建一个性能记录
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/mark
     mark = tag => perf.mark(tag)
+    // 进行性能测量
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/measure
     measure = (name, startTag, endTag) => {
       perf.measure(name, startTag, endTag)
       perf.clearMarks(startTag)

@@ -29,6 +29,7 @@ export function setActiveInstance(vm: Component) {
   }
 }
 
+// 初始化生命周期
 export function initLifecycle (vm: Component) {
   const options = vm.$options
 
@@ -66,6 +67,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // based on the rendering backend used.
     if (!prevVnode) {
       // initial render
+      // 将vnode转成dom并挂载到父级dom上
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
     } else {
       // updates
@@ -138,14 +140,16 @@ export function lifecycleMixin (Vue: Class<Component>) {
   }
 }
 
+// 挂载组件
 export function mountComponent (
   vm: Component,
   el: ?Element,
   hydrating?: boolean
 ): Component {
-  vm.$el = el
+  vm.$el = el // this.$el API 缓存dom
   if (!vm.$options.render) {
-    vm.$options.render = createEmptyVNode
+    // 如果没有自定义render
+    vm.$options.render = createEmptyVNode // 默认置为创建一个虚拟dom
     if (process.env.NODE_ENV !== 'production') {
       /* istanbul ignore if */
       if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
@@ -164,11 +168,13 @@ export function mountComponent (
       }
     }
   }
+  // 触发beforeMount方法
   callHook(vm, 'beforeMount')
 
   let updateComponent
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    // 开启性能监控时
     updateComponent = () => {
       const name = vm._name
       const id = vm._uid
@@ -187,6 +193,7 @@ export function mountComponent (
     }
   } else {
     updateComponent = () => {
+      // 调用_update方法
       vm._update(vm._render(), hydrating)
     }
   }
@@ -333,10 +340,11 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
   }
 }
 
+// 调用生命周期钩子
 export function callHook (vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
   pushTarget()
-  const handlers = vm.$options[hook]
+  const handlers = vm.$options[hook] // 先获取对应生命周期的方法
   const info = `${hook} hook`
   if (handlers) {
     for (let i = 0, j = handlers.length; i < j; i++) {

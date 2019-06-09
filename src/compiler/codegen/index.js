@@ -218,7 +218,6 @@ export function genFor (
 
 export function genData (el: ASTElement, state: CodegenState): string {
   let data = '{'
-
   // directives first.
   // directives may mutate the el's other properties before they are generated.
   const dirs = genDirectives(el, state)
