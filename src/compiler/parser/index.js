@@ -349,6 +349,7 @@ export function parse (
       }
     },
 
+    // 结束元素
     end (tag, start, end) {
       const element = stack[stack.length - 1]
       // pop stack

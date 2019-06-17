@@ -47,11 +47,12 @@ export function createElement (
   return _createElement(context, tag, data, children, normalizationType)
 }
 
+// 创建Vnode
 export function _createElement (
-  context: Component,
-  tag?: string | Class<Component> | Function | Object,
-  data?: VNodeData,
-  children?: any,
+  context: Component, // 当前实例
+  tag?: string | Class<Component> | Function | Object, // 标签
+  data?: VNodeData, // 标签相关属性
+  children?: any, // 子元素
   normalizationType?: number
 ): VNode | Array<VNode> {
   // 如果data含有__ob__字段则报错（包含观察者）
@@ -68,7 +69,7 @@ export function _createElement (
   if (isDef(data) && isDef(data.is)) {
     tag = data.is
   }
-  if (!tag) {
+  if (!tag) { // 没有tagName直接创建一个空的vnode
     // in case of component :is set to falsy value
     return createEmptyVNode()
   }
@@ -86,6 +87,7 @@ export function _createElement (
   }
 
   // support single function children as default scoped slot
+  // 支持一个函数化的子元素，并将它转成scoped-slot的default元素
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
   ) {
@@ -94,6 +96,7 @@ export function _createElement (
     children.length = 0
   }
 
+  // 规范化children
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {

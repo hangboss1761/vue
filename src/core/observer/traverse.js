@@ -11,6 +11,7 @@ const seenObjects = new Set()
  * getters, so that every nested property inside the object
  * is collected as a "deep" dependency.
  */
+// 遍历对象的每一个字段以触发所有的getter
 export function traverse (val: any) {
   _traverse(val, seenObjects)
   seenObjects.clear() // 清空对象的所有字段

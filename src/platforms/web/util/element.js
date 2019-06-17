@@ -94,5 +94,5 @@ export function isUnknownElement (tag: string): boolean {
   }
 }
 
-// 文本输入类型map
+// 文本输入类型map（input type）
 export const isTextInputType = makeMap('text,number,password,search,email,tel,url')

@@ -14,6 +14,7 @@ export function initProvide (vm: Component) {
   }
 }
 
+// 初始化inject
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
@@ -37,6 +38,7 @@ export function initInjections (vm: Component) {
   }
 }
 
+// 解析inject字段
 export function resolveInject (inject: any, vm: Component): ?Object {
   if (inject) {
     // inject is :any because flow is not smart enough to figure out cached
@@ -49,7 +51,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
       const key = keys[i]
       // #6574 in case the inject object is observed...
       if (key === '__ob__') continue
-      const provideKey = inject[key].from
+      const provideKey = inject[key].from // 获取父级注入的key
       let source = vm
       while (source) {
         if (source._provided && hasOwn(source._provided, provideKey)) {

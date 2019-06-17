@@ -98,6 +98,7 @@ const componentVNodeHooks = {
 
 const hooksToMerge = Object.keys(componentVNodeHooks)
 
+// 创建component组件
 export function createComponent (
   Ctor: Class<Component> | Function | Object | void,
   data: ?VNodeData,

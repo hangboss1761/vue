@@ -299,7 +299,7 @@ export function validateComponentName (name: string) {
  * Ensure all props option syntax are normalized into the
  * Object-based format.
  */
-// 初始化props
+// 规范化props
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
   if (!props) return
@@ -319,7 +319,7 @@ function normalizeProps (options: Object, vm: ?Component) {
   } else if (isPlainObject(props)) { // props为对象
     for (const key in props) {
       val = props[key]
-      name = camelize(key)
+      name = camelize(key) // 将连词符转成驼峰
       res[name] = isPlainObject(val)
         ? val
         : { type: val }
@@ -337,15 +337,17 @@ function normalizeProps (options: Object, vm: ?Component) {
 /**
  * Normalize all injections into Object-based format
  */
+// 规范化Inject
 function normalizeInject (options: Object, vm: ?Component) {
   const inject = options.inject
   if (!inject) return
   const normalized = options.inject = {}
-  if (Array.isArray(inject)) {
+  if (Array.isArray(inject)) { // inject为数组
     for (let i = 0; i < inject.length; i++) {
+      // 遍历数组赋值
       normalized[inject[i]] = { from: inject[i] }
     }
-  } else if (isPlainObject(inject)) {
+  } else if (isPlainObject(inject)) { // inject为对象
     for (const key in inject) {
       const val = inject[key]
       normalized[key] = isPlainObject(val)
@@ -364,6 +366,7 @@ function normalizeInject (options: Object, vm: ?Component) {
 /**
  * Normalize raw function directives into object format.
  */
+// 规划法指令
 function normalizeDirectives (options: Object) {
   const dirs = options.directives
   if (dirs) {
@@ -390,6 +393,7 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
  */
+// 合并两个option
 export function mergeOptions (
   parent: Object,
   child: Object,

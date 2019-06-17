@@ -308,6 +308,7 @@ export function parseHTML (html, options) {
     }
   }
 
+  // 解析结束标签
   function parseEndTag (tagName, start, end) {
     let pos, lowerCasedTagName
     if (start == null) start = index
@@ -315,7 +316,8 @@ export function parseHTML (html, options) {
 
     // Find the closest opened tag of the same type
     if (tagName) {
-      lowerCasedTagName = tagName.toLowerCase()
+      lowerCasedTagName = tagName.toLowerCase() // 小写的标签名
+      // 找到最近的一个相同的开始标签（标签名一致）
       for (pos = stack.length - 1; pos >= 0; pos--) {
         if (stack[pos].lowerCasedTag === lowerCasedTagName) {
           break
