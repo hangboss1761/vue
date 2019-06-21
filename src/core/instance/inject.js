@@ -31,6 +31,7 @@ export function initInjections (vm: Component) {
           )
         })
       } else {
+        // 增加响应式监听
         defineReactive(vm, key, result[key])
       }
     })
@@ -43,24 +44,25 @@ export function resolveInject (inject: any, vm: Component): ?Object {
   if (inject) {
     // inject is :any because flow is not smart enough to figure out cached
     const result = Object.create(null)
-    const keys = hasSymbol
+    const keys = hasSymbol // 注入的字段key数组
       ? Reflect.ownKeys(inject)
       : Object.keys(inject)
 
-    for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) { // 遍历inject对象
       const key = keys[i]
       // #6574 in case the inject object is observed...
       if (key === '__ob__') continue
       const provideKey = inject[key].from // 获取父级注入的key
       let source = vm
+      // 逐层遍历父级找到注入对象
       while (source) {
         if (source._provided && hasOwn(source._provided, provideKey)) {
-          result[key] = source._provided[provideKey]
+          result[key] = source._provided[provideKey] // 通过父级的_provide获取
           break
         }
         source = source.$parent
       }
-      if (!source) {
+      if (!source) { // 走到这一步证明没有注入的provide，则开始走default方法
         if ('default' in inject[key]) {
           const provideDefault = inject[key].default
           result[key] = typeof provideDefault === 'function'
@@ -71,6 +73,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
         }
       }
     }
+    // 返回注入结果
     return result
   }
 }

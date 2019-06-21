@@ -12,14 +12,16 @@ export const createCompiler = createCompilerCreator(function baseCompile (
   template: string,
   options: CompilerOptions
 ): CompiledResult {
+  // 解析html并生成astElement树
   const ast = parse(template.trim(), options)
-
+  console.log(ast)
   if (options.optimize !== false) {
     optimize(ast, options)
   }
 
+  // 根据astElement树转成生成vnode的代码
   const code = generate(ast, options)
-
+  console.log(code.render)
   return {
     ast,
     render: code.render,

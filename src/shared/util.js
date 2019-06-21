@@ -150,7 +150,7 @@ export function makeMap (
 /**
  * Check if a tag is a built-in tag.
  */
-// 创建built in tag的map，包含slow、components字段，不区分大小写
+// 创建built in tag的map，包含slow、component字段，不区分大小写
 export const isBuiltInTag = makeMap('slot,component', true)
 
 /**

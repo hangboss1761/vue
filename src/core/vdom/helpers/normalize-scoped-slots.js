@@ -4,6 +4,7 @@ import { def } from 'core/util/lang'
 import { normalizeChildren } from 'core/vdom/helpers/normalize-children'
 import { emptyObject } from 'shared/util'
 
+// 规范化ScopedSlots
 export function normalizeScopedSlots (
   slots: { [key: string]: Function } | void,
   normalSlots: { [key: string]: Array<VNode> },
@@ -15,7 +16,7 @@ export function normalizeScopedSlots (
   const key = slots && slots.$key
   if (!slots) {
     res = {}
-  } else if (slots._normalized) {
+  } else if (slots._normalized) { // 已经规范过了直接返回
     // fast path 1: child component re-render only, parent did not change
     return slots._normalized
   } else if (

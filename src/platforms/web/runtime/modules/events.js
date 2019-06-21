@@ -10,11 +10,12 @@ import { currentFlushTimestamp } from 'core/observer/scheduler'
 // it's important to place the event as the first in the array because
 // the whole point is ensuring the v-model callback gets called before
 // user-attached handlers.
+// 规范化监听事件
 function normalizeEvents (on) {
   /* istanbul ignore if */
   if (isDef(on[RANGE_TOKEN])) {
     // IE input[type=range] only supports `change` event
-    const event = isIE ? 'change' : 'input'
+    const event = isIE ? 'change' : 'input' // ie只支持change事件
     on[event] = [].concat(on[RANGE_TOKEN], on[event] || [])
     delete on[RANGE_TOKEN]
   }
@@ -80,6 +81,7 @@ function add (
       }
     }
   }
+
   target.addEventListener(
     name,
     handler,

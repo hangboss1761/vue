@@ -110,7 +110,7 @@ export function createComponent (
     return
   }
 
-  const baseCtor = context.$options._base
+  const baseCtor = context.$options._base // Vue构造函数
 
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
@@ -161,6 +161,7 @@ export function createComponent (
 
   // functional component
   if (isTrue(Ctor.options.functional)) {
+    // functional api实现
     return createFunctionalComponent(Ctor, propsData, data, context, children)
   }
 

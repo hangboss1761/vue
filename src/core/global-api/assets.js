@@ -23,6 +23,7 @@ export function initAssetRegisters (Vue: GlobalAPI) {
         if (type === 'component' && isPlainObject(definition)) {
           // Vue.component定义
           definition.name = definition.name || id
+          // 调用vue.extend方法创建一个组件的构造函数
           definition = this.options._base.extend(definition)
         }
         if (type === 'directive' && typeof definition === 'function') {

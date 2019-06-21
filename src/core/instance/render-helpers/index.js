@@ -16,8 +16,8 @@ export function installRenderHelpers (target: any) {
   target._o = markOnce
   target._n = toNumber // 将参数转成数字
   target._s = toString // 返回参数的字符串表达
-  target._l = renderList
-  target._t = renderSlot
+  target._l = renderList // 渲染数组
+  target._t = renderSlot // 渲染slot
   target._q = looseEqual // 判断两个对象是否相等（浅拷贝对比）
   target._i = looseIndexOf // 返回数组中指定元素的位置
   target._m = renderStatic

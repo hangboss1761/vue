@@ -170,7 +170,6 @@ export function mountComponent (
   }
   // 触发beforeMount方法
   callHook(vm, 'beforeMount')
-
   let updateComponent
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {

@@ -33,6 +33,7 @@ export function initMixin (Vue: Class<Component>) {
     vm._isVue = true // 添加vue标记
     // merge options
     // options存在且_isComponent为true（子组件）
+
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the

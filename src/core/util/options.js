@@ -448,6 +448,7 @@ export function mergeOptions (
  * This function is used because child instances need access
  * to assets defined in its ancestor chain.
  */
+// 获取指定字段的返回值（多种匹配模式）
 export function resolveAsset (
   options: Object,
   type: string,
@@ -460,12 +461,13 @@ export function resolveAsset (
   }
   const assets = options[type]
   // check local registration variations first
-  if (hasOwn(assets, id)) return assets[id]
-  const camelizedId = camelize(id)
-  if (hasOwn(assets, camelizedId)) return assets[camelizedId]
-  const PascalCaseId = capitalize(camelizedId)
-  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]
+  if (hasOwn(assets, id)) return assets[id] // 直接匹配返回
+  const camelizedId = camelize(id) // 转成驼峰
+  if (hasOwn(assets, camelizedId)) return assets[camelizedId] // 判断是否有驼峰匹配返回
+  const PascalCaseId = capitalize(camelizedId) // 转成连词符
+  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId] // 判断是否有连词符匹配返回
   // fallback to prototype chain
+  // 都不存在则报错返回undefined了
   const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
   if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
     warn(

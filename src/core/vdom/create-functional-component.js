@@ -91,6 +91,7 @@ export function FunctionalRenderContext (
 
 installRenderHelpers(FunctionalRenderContext.prototype)
 
+// 创建functional组件
 export function createFunctionalComponent (
   Ctor: Class<Component>,
   propsData: ?Object,
@@ -118,9 +119,11 @@ export function createFunctionalComponent (
     Ctor
   )
 
+  // 重置了_h方法
   const vnode = options.render.call(null, renderContext._c, renderContext)
 
   if (vnode instanceof VNode) {
+    // 返回克隆的vnode
     return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
   } else if (Array.isArray(vnode)) {
     const vnodes = normalizeChildren(vnode) || []
@@ -136,9 +139,9 @@ function cloneAndMarkFunctionalResult (vnode, data, contextVm, options, renderCo
   // #7817 clone node before setting fnContext, otherwise if the node is reused
   // (e.g. it was from a cached normal slot) the fnContext causes named slots
   // that should not be matched to match.
-  const clone = cloneVNode(vnode)
-  clone.fnContext = contextVm
-  clone.fnOptions = options
+  const clone = cloneVNode(vnode) // 克隆一个vnode
+  clone.fnContext = contextVm // 组件父级
+  clone.fnOptions = options // 组件参数
   if (process.env.NODE_ENV !== 'production') {
     (clone.devtoolsMeta = clone.devtoolsMeta || {}).renderContext = renderContext
   }

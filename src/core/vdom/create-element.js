@@ -118,7 +118,11 @@ export function _createElement (
         context
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
-      // component
+      // 判断条件包括
+      // 1、没有任何属性值 或 不是pre标签
+      // 2、从$options.components中找到对应的组件
+      // component 走到这里渲染组件
+      // Ctor为匹配到的组件
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
       // unknown or unlisted namespaced elements
